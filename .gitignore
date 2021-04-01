@@ -1,0 +1,5 @@
+# outout files from the tests
+**/*.out
+
+# ignore tools folder
+tools/*
