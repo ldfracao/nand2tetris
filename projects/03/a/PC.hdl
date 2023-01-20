@@ -15,6 +15,14 @@ CHIP PC {
     IN in[16],load,inc,reset;
     OUT out[16];
 
-    PARTS:  
+    PARTS:
+
+    // This functionality can be achieved by multiplexing through the various conditions and finally feeding the register back in order to be processed in the next clock cycle
+    Inc16(in=feedback1, out=incout);
+    Mux16(a=feedback1, b=incout, sel=inc, out=incornot);
+    Mux16(a=incornot, b=in, sel=load, out=loadout);
+    Mux16(a=loadout, b=false, sel=reset, out=feedback);
+
+    Register(in=feedback, load=true, out=feedback1, out=out);
 
 }
