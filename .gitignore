@@ -1,0 +1,12 @@
+tools/
+*.zip
+projects/demo
+*.cmp
+*.tst
+*.out
+*.html
+*.iml
+*.pdf
+*.xml
+*.txt
+*.gif

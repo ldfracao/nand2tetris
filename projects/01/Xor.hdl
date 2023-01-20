@@ -1,0 +1,26 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor.hdl
+
+/**
+ * Exclusive-or gate:
+ * out = not (a == b)
+ */
+
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+
+    // From the XOR truth table we see that the logic that satisfies the condition is NOTa AND b OR a AND NOTb, i.e. when the bits are inverted
+    Not(in=a, out=aout);
+    Not(in=b, out=bout);
+
+    And(a=aout, b=b, out=notaandb);
+    And(a=a, b=bout, out=aandnotb);
+    
+    Or(a=notaandb, b=aandnotb, out=out);
+
+}
