@@ -15,6 +15,6 @@ CHIP PC {
     IN in[16],load,inc,reset;
     OUT out[16];
 
-    PARTS:
-    // Put your code here:
+    PARTS:  
+
 }
