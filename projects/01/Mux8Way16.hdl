@@ -29,8 +29,4 @@ CHIP Mux8Way16 {
 
     Mux16(a=temp3, b=tempc, sel=sel[2], out=out);
     
-    
-    
-    
-    
 }

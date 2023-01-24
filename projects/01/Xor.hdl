@@ -23,4 +23,17 @@ CHIP Xor {
     
     Or(a=notaandb, b=aandnotb, out=out);
 
+    // two other ways you can build a XOR gate
+
+    // Nand(a=a, b=b, out=nandout);
+    // Or(a=a, b=b, out=orout);
+    // And(a=nandout, b=orout, out=out);
+
+    // using only nands
+
+    // Nand(a=a, b=b, out=nand1out);
+    // Nand(a=nand1out, b=a, out=nand2out);
+    // Nand(a=nand1out, b=b, out=nand3out);
+    // Nand(a=nand2out, b=nand3out, out=out);
+
 }

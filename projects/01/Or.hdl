@@ -19,4 +19,10 @@ CHIP Or {
     Not(in=a, out=aout);
     Not(in=b, out=bout);
     Nand(a=aout, b=bout, out=out);
+
+    //using only NAND gates
+    // Nand(a=a, b=a, out=nand1out);
+    // Nand(a=b, b=b, out=nand2out);
+    // Nand(a=nand1out, b=nand2out, out=out);
+    
 }

@@ -14,7 +14,7 @@ CHIP Not {
 
     PARTS:
     
-    // A NOT gate can be build simply by feeding the same input to a nand gate
+    // A NOT gate can be built simply by feeding the input to both inputs of a NAND gate
     Nand(a=in, b=in, out=out);
     
 }
