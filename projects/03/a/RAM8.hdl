@@ -15,7 +15,10 @@ CHIP RAM8 {
     OUT out[16];
 
     PARTS:
+
+    // In order to select which register is to be interated with, a DMUx8Way is used to direct the load input to the register of interest, based on the address input.
     DMux8Way(in=load, sel=address, a=load1, b=load2, c=load3, d=load4, e=load5, f=load6, g=load7, h=load8);
+    
     Register(in=in, load=load1, out=reg1);
     Register(in=in, load=load2, out=reg2);
     Register(in=in, load=load3, out=reg3);
@@ -24,6 +27,8 @@ CHIP RAM8 {
     Register(in=in, load=load6, out=reg6);
     Register(in=in, load=load7, out=reg7);
     Register(in=in, load=load8, out=reg8);
+
+    // Finally a Mux8Way is used to output the selected register.
     Mux8Way16(a=reg1, b=reg2, c=reg3, d=reg4, e=reg5, f=reg6, g=reg7, h=reg8, sel=address, out=out);
     
 }

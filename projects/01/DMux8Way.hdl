@@ -19,13 +19,16 @@ CHIP DMux8Way {
 
     // Same ideas of the DMux4Way apply, except that further branching is needed.
     DMux(in=in, sel=sel[2], a=abcdBranch, b=efghBranch);
+    DMux4Way(in=abcdBranch, sel[0]=sel[0], sel[1]=sel[1], a=a, b=b, c=c, d=d);
+    DMux4Way(in=efghBranch, sel[0]=sel[0], sel[1]=sel[1], a=e, b=f, c=g, d=h);
 
-    DMux(in=abcdBranch, sel=sel[1], a=abBranch, b=cdBranch);
-    DMux(in=efghBranch, sel=sel[1], a=efBranch, b=ghBranch);
+    // Another implementation
+    // DMux(in=abcdBranch, sel=sel[1], a=abBranch, b=cdBranch);
+    // DMux(in=efghBranch, sel=sel[1], a=efBranch, b=ghBranch);
 
-    DMux(in=abBranch, sel=sel[0], a=a, b=b);
-    DMux(in=cdBranch, sel=sel[0], a=c, b=d);
-    DMux(in=efBranch, sel=sel[0], a=e, b=f);
-    DMux(in=ghBranch, sel=sel[0], a=g, b=h);
+    // DMux(in=abBranch, sel=sel[0], a=a, b=b);
+    // DMux(in=cdBranch, sel=sel[0], a=c, b=d);
+    // DMux(in=efBranch, sel=sel[0], a=e, b=f);
+    // DMux(in=ghBranch, sel=sel[0], a=g, b=h);
     
 }

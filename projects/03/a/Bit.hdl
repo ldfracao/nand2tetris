@@ -14,7 +14,10 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    Mux(a=dffout, b=in, sel=load, out=muxout);
-    DFF(in=muxout, out=dffout, out=out);
+    // Since a DFF (data flip-flop) can only output the input of the previous clock cycle, we can select between which value the DFF will output (current or previous clock cycle) by multiplexing the input with the output of the previous clock cycle.
+
+    // Feeds the output of the DFF back to itself via a multiplexor.
+    Mux(a=feedback, b=in, sel=load, out=muxout);
+    DFF(in=muxout, out=feedback, out=out);
     
 }

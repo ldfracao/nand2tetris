@@ -14,8 +14,9 @@ CHIP RAM64 {
     IN in[16], load, address[6];
     OUT out[16];
 
-    PARTS: 
+    PARTS:
 
+    // Same ideas of RAM8 apply except that first 3 bits of the address are used to select which RAM8 is selected and the last 3 bits are used to select which register inside the RAM8 is selected.
     DMux8Way(in=load, sel=address[0..2], a=load1, b=load2, c=load3, d=load4, e=load5, f=load6, g=load7, h=load8);
     
     RAM8(in=in, load=load1, address=address[3..5], out=ram81);

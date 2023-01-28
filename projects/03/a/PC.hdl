@@ -12,17 +12,26 @@
  */
 
 CHIP PC {
-    IN in[16],load,inc,reset;
+    IN in[16], load, inc, reset;
     OUT out[16];
 
     PARTS:
 
-    // This functionality can be achieved by multiplexing through the various conditions and finally feeding the register back in order to be processed in the next clock cycle
-    Inc16(in=feedback1, out=incout);
-    Mux16(a=feedback1, b=incout, sel=inc, out=incornot);
-    Mux16(a=incornot, b=in, sel=load, out=loadout);
-    Mux16(a=loadout, b=false, sel=reset, out=feedback);
+    // This functionality can be achieved by multiplexing through the various conditions and finally feeding the register back in order to be processed in the next clock cycle.
 
-    Register(in=feedback, load=true, out=feedback1, out=out);
+    // Fed back register increment.
+    Inc16(in=feedback, out=incOut);
+
+    // Selects between the fed back register and its increment, based on the inc control bit.
+    Mux16(a=feedback, b=incOut, sel=inc, out=incORnot);
+
+    // Selects between the chip input and the previous output, based on the load control bit.
+    Mux16(a=incORnot, b=in, sel=load, out=loadOut);
+
+    // Resets or not the input, based on the reset control bit.
+    Mux16(a=loadOut, b=false, sel=reset, out=resetORnot);
+
+    // Register used to store the count.
+    Register(in=resetORnot, load=true, out=feedback, out=out);
 
 }
