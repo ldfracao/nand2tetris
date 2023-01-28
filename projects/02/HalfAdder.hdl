@@ -14,12 +14,12 @@ CHIP HalfAdder {
 
     PARTS:
 
-    // Constructing a truth table for a HalfAdder makes it easy to see the implementation
+    // Constructing a truth table for a HalfAdder makes it easy to see the implementation.
 
-    // A XOR gate yields the sum of the two bits, since the sum is 1 only when the input have opposing values
+    // A XOR gate yields the sum of the two bits, since the sum is 1 only when the input have opposing values.
     Xor(a=a, b=b, out=sum);
 
-    // An AND gate yields the carry bit, since there is only going to be a carry of 1 when both inputs are 1
+    // An AND gate yields the carry bit, since there is only going to be a carry of 1 when both inputs are 1.
     And(a=a, b=b, out=carry);
 
 }

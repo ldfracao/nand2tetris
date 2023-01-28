@@ -14,7 +14,7 @@ CHIP Inc16 {
 
     PARTS:
 
-    // Can be implemented using Add16 when the first bit is 1, thus increment a 16-bit number by 1
+    // Can be implemented using the adder chip by feeding a 1 into its first bit, thus incrementing a 16-bit number by 1.
     Add16(a=in, b[0]=true, out=out);
     
 }

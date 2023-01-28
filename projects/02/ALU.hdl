@@ -43,34 +43,39 @@ CHIP ALU {
 
     PARTS:
 
-    // Zeroing the x input or not can be done multiplexing between the input itself or all zeros, based on the nx and zx control bits
-    Mux16(a=x, b=false, sel=zx, out=zxout);
-    Not16(in=zxout, out=notzx);
-    Mux16(a=zxout, b=notzx, sel=nx, out=nxout);
+    // Zeroing the x input or not can be done by multiplexing between the input itself or all zeros  based on the zx control bit.
+    Mux16(a=x, b=false, sel=zx, out=xORzero);
 
-    // Same idea for the y bits, based on the ny and zy control bits
-    Mux16(a=y, b=false, sel=zy, out=zyout);
-    Not16(in=zyout, out=notny);
-    Mux16(a=zyout, b=notny, sel=ny, out=nyout);
+    // Negating an input or not can be done by multiplexing its value with its negation based on the nx control bit.
+    Not16(in=xORzero, out=notxORzero);
+    Mux16(a=xORzero, b=notxORzero, sel=nx, out=xOut);
+
+    // Same idea for the y bits based on the ny and zy control bits.
+    Mux16(a=y, b=false, sel=zy, out=yORzero);
+    Not16(in=yORzero, out=notyORzero);
+    Mux16(a=yORzero, b=notyORzero, sel=ny, out=yOut);
     
-    // Multiplexing between X + Y and X AND Y based on the f control bit
-    Add16(a=nxout, b=nyout, out=xplusy);
-    And16(a=nxout, b=nyout, out=xandy);
-    Mux16(a=xandy, b=xplusy, sel=f, out=fout);
+    // Multiplexing between x + y and x AND y based on the f control bit.
+    Add16(a=xOut, b=yOut, out=xPlusy);
+    And16(a=xOut, b=yOut, out=xAndy);
+    Mux16(a=xAndy, b=xPlusy, sel=f, out=fOut);
 
-    // Multiplexes between fout and its negation based on the no control bit
-    // Also subdivides the output pins into two sets of eight and its most significant bit, in order to be used later when checking if output is zero or negative
-    Not16(in=fout, out=notfout);
-    Mux16(a=fout, b=notfout, sel=no, out=out, out[15]=msbit, out[0..7]=lsbyte, out[8..15]=msbyte);
+    // Multiplexes between fOut and its negation based on the no control bit.
+    // Also subdivides the 16-bit output bus into two sets of eight bits and its most significant bit, in order to be used later when checking if output is zero or negative.
+    Not16(in=fOut, out=notfOut);
+    Mux16(a=fOut, b=notfOut, sel=no, out=out, out[15]=msBit, out[0..7]=lsByte, out[8..15]=msByte);
 
-    // Combining the 8 least significant bits with the 8 most significant bits we can check if out is zero using Or8Way gates since they evaluate to 1 if any of its inputs is a 1, thus evaluating to zero only when all its inputs are zero
-    // Finally since zr must be 1 if output is 0, all that is left is to invert the output
-    Or8Way(in=lsbyte, out=least);
-    Or8Way(in=msbyte, out=most);
-    Or(a=least, b=most, out=notzr);
+    // Combining the 8 least significant bits with the 8 most significant bits we can check if out is zero using Or8Way gates since they evaluate to 1 if any of its inputs is a 1, thus evaluating to zero only when all its inputs are zero.
+    Or8Way(in=lsByte, out=or8lsByte);
+    Or8Way(in=msByte, out=or8msByte);
+
+    // Then an OR gate is used to converge the to Or8Way gates together.
+    Or(a=or8lsByte, b=or8msByte, out=notzr);
+
+    // Since zr must be 1 if output is 0, all that is left is to invert the output.
     Not(in=notzr, out=zr);
     
-    // A number is negative in two's complement if its most significat bit is 1, thus evaluating only to 1 when ANDed with a 1. Its output is the ng control bit
-    And(a=true, b=msbit, out=ng);
+    // A number is negative in two's complement if its most significat bit is 1, thus evaluating only to 1 when ANDed with a 1. Its output is the ng control bit.
+    And(a=true, b=msBit, out=ng);
     
 }
