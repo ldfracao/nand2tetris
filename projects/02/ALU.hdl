@@ -43,12 +43,12 @@ CHIP ALU {
 
     PARTS:
 
-    // Zeroing the x input or not can be done multiplexing between the input itself or all zeros, based on the nx control bit
+    // Zeroing the x input or not can be done multiplexing between the input itself or all zeros, based on the nx and zx control bits
     Mux16(a=x, b=false, sel=zx, out=zxout);
     Not16(in=zxout, out=notzx);
     Mux16(a=zxout, b=notzx, sel=nx, out=nxout);
 
-    // Same idea for the y bits, based on the ny control bit
+    // Same idea for the y bits, based on the ny and zy control bits
     Mux16(a=y, b=false, sel=zy, out=zyout);
     Not16(in=zyout, out=notny);
     Mux16(a=zyout, b=notny, sel=ny, out=nyout);
