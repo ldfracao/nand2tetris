@@ -14,9 +14,13 @@ CHIP FullAdder {
 
     PARTS:
 
-    // The sum of three bits can be done by adding two bits then adding the the third bit to the sum, if either one of the sums OR the other produces a carry, then carry gets 1
+    // The sum of three bits can be done by first adding two bits, then adding the third bit to the sum. 
+    
+    // adds a and b together and propagates the carry bit
     HalfAdder(a=a, b=b, sum=halfsum, carry=carry1);
+    // adds c to a and b by feeding the sum to one input of the HalfAdder. Propagates the carry bit
     HalfAdder(a=c, b=halfsum, sum=sum, carry=carry2);
+    //If either one of the sums OR the other produces a carry, then carry gets 1
     Or(a=carry1, b=carry2, out=carry);
 
 }

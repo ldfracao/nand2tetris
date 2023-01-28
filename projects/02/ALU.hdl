@@ -43,34 +43,34 @@ CHIP ALU {
 
     PARTS:
 
-    // Zeroing the input or not can be done multiplexing between the input itself or all zeros
+    // Zeroing the x input or not can be done multiplexing between the input itself or all zeros, based on the nx control bit
     Mux16(a=x, b=false, sel=zx, out=zxout);
     Not16(in=zxout, out=notzx);
     Mux16(a=zxout, b=notzx, sel=nx, out=nxout);
 
-    // Same idea for the y bits
+    // Same idea for the y bits, based on the ny control bit
     Mux16(a=y, b=false, sel=zy, out=zyout);
     Not16(in=zyout, out=notny);
     Mux16(a=zyout, b=notny, sel=ny, out=nyout);
     
-    // Multiplexing between X + Y and X AND Y
+    // Multiplexing between X + Y and X AND Y based on the f control bit
     Add16(a=nxout, b=nyout, out=xplusy);
     And16(a=nxout, b=nyout, out=xandy);
     Mux16(a=xandy, b=xplusy, sel=f, out=fout);
 
-    // Negates or not fout
-    // Also subdivides output pins into two sets of eight in order to be used later when checking if output us zero or negative
+    // Multiplexes between fout and its negation based on the no control bit
+    // Also subdivides the output pins into two sets of eight and its most significant bit, in order to be used later when checking if output is zero or negative
     Not16(in=fout, out=notfout);
-    Mux16(a=fout, b=notfout, sel=no, out=out, out[15]=rmb, out[0..7]=lsb, out[8..15]=msb);
+    Mux16(a=fout, b=notfout, sel=no, out=out, out[15]=msbit, out[0..7]=lsbyte, out[8..15]=msbyte);
 
-    // Combining the 8 leftmost bytes with the 8 rightmost bytes we can check if out is zero using Or8Way since they evaluate to 1 if any of its inputs is a 1, thus evaluating to zero  only when all its inputs are zero
+    // Combining the 8 least significant bits with the 8 most significant bits we can check if out is zero using Or8Way gates since they evaluate to 1 if any of its inputs is a 1, thus evaluating to zero only when all its inputs are zero
     // Finally since zr must be 1 if output is 0, all that is left is to invert the output
-    Or8Way(in=lsb, out=least);
-    Or8Way(in=msb, out=most);
+    Or8Way(in=lsbyte, out=least);
+    Or8Way(in=msbyte, out=most);
     Or(a=least, b=most, out=notzr);
     Not(in=notzr, out=zr);
     
-    // A number is negative if its rightmost bit is 1, thus evaluating only to 1 when ANDed with a 1
-    And(a=true, b=rmb, out=ng);
+    // A number is negative in two's complement if its most significat bit is 1, thus evaluating only to 1 when ANDed with a 1. Its output is the ng control bit
+    And(a=true, b=msbit, out=ng);
     
 }
