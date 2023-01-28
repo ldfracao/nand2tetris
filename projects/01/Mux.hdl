@@ -15,12 +15,12 @@ CHIP Mux {
 
     PARTS:
     
-    // Selecting between two signals can be done by feeding the selection signal and its negation through AND gates, causing the AND gates to always receive inverted inputs, essentially activating one while deactivating the other, after that an OR gate selects between the two AND gate converging into one output
-    Not(in=sel, out=nots);
+    // Selecting between two signals can be done by feeding the selection signal and its negation through two AND gates, causing the AND gates to always receive inverted selection signals, essentially activating one while deactivating the other since 0 AND X = 0, after that an OR gate converges the outputs into the value of whichever gate was active.
+    Not(in=sel, out=notsel);
 
-    And(a=a, b=nots, out=temp1);
-    And(a=b, b=sel, out=temp2);
+    And(a=a, b=notsel, out=aBit);
+    And(a=b, b=sel, out=bBit);
 
-    Or(a=temp1, b=temp2, out=out);   
+    Or(a=aBit, b=bBit, out=out);   
 
 }

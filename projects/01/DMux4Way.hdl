@@ -17,9 +17,10 @@ CHIP DMux4Way {
 
     PARTS:
     
-    // A DMux4Way can be implemented using DMux to "branch out" the bit you want to select, the first DMux branches the bits into two, which are then further branched into the final output
-    DMux(in=in, sel=sel[1], a=temp1, b=temp2);
-    DMux(in=temp1, sel=sel[0], a=a, b=b);
-    DMux(in=temp2, sel=sel[0], a=c, b=d);
+    // A DMux4Way can be implemented using DMux to "branch out" the bit you want to select, the first DMux branches the bits into two, which are then further branched into the final output.
+    DMux(in=in, sel=sel[1], a=abBranch, b=cdBranch);
+
+    DMux(in=abBranch, sel=sel[0], a=a, b=b);
+    DMux(in=cdBranch, sel=sel[0], a=c, b=d);
     
 }

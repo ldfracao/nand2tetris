@@ -19,14 +19,14 @@ CHIP Mux8Way16 {
 
     PARTS:
     // Same ideas of the Mux4Way apply, selecting between every two buses while narrowing down the selection
-    Mux16(a=a, b=b, sel=sel[0], out=temp1);
-    Mux16(a=c, b=d, sel=sel[0], out=temp2);
-    Mux16(a=temp1, b=temp2, sel=sel[1], out=temp3);
+    Mux16(a=a, b=b, sel=sel[0], out=abBus);
+    Mux16(a=c, b=d, sel=sel[0], out=cdBus);
+    Mux16(a=abBus, b=cdBus, sel=sel[1], out=abcdBus);
 
-    Mux16(a=e, b=f, sel=sel[0], out=tempa);
-    Mux16(a=g, b=h, sel=sel[0], out=tempb);
-    Mux16(a=tempa, b=tempb, sel=sel[1], out=tempc);
+    Mux16(a=e, b=f, sel=sel[0], out=efBus);
+    Mux16(a=g, b=h, sel=sel[0], out=ghBus);
+    Mux16(a=efBus, b=ghBus, sel=sel[1], out=efghBus);
 
-    Mux16(a=temp3, b=tempc, sel=sel[2], out=out);
+    Mux16(a=abcdBus, b=efghBus, sel=sel[2], out=out);
     
 }

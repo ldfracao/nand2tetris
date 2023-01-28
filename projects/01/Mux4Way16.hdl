@@ -16,9 +16,10 @@ CHIP Mux4Way16 {
     OUT out[16];
 
     PARTS:
-    // The first selection signal to select between the first two buses and between the third and fourth buses, leaving two buses to be selected from, afterwards the second signal is used to select between the two remaining buses narrowing down the selection
-    Mux16(a=a, b=b, sel=sel[0], out=temp1);
-    Mux16(a=c, b=d, sel=sel[0], out=temp2);
-    Mux16(a=temp1, b=temp2, sel=sel[1], out=out);
+    // The first selection signal is used to select two sets of 16-bit buses, one between the first two buses (a and b) and the other between the third and fourth buses (c and d), leaving two buses to be selected from, afterwards the second signal is used to select between the two remaining buses narrowing down the selection to just one bus.
+    Mux16(a=a, b=b, sel=sel[0], out=abBus);
+    Mux16(a=c, b=d, sel=sel[0], out=cdBus);
+    
+    Mux16(a=abBus, b=cdBus, sel=sel[1], out=out);
 
 }
